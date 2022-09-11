@@ -1,0 +1,14 @@
+{
+    "name": "RegDiff",
+    "author": "dsx42",
+    "license": "GPL-3.0",
+    "home": "https://github.com/dsx42/RegDiff",
+    "version": "2022.9.11",
+    "files": [
+        "RegDiff.cmd",
+        "RegDiff.ps1",
+        "product.json",
+        "LICENSE",
+        "README.md"
+    ]
+}
