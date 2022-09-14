@@ -3,7 +3,7 @@
     "author": "dsx42",
     "license": "GPL-3.0",
     "home": "https://github.com/dsx42/RegDiff",
-    "version": "2022.9.11",
+    "version": "2022.9.14",
     "files": [
         "RegDiff.cmd",
         "RegDiff.ps1",

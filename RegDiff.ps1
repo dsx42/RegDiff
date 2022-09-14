@@ -1,4 +1,38 @@
-﻿function SaveReg {
+﻿param(
+    [switch]$Version
+)
+
+function GetVertion {
+    $ProductJsonPath = "$PSScriptRoot\product.json"
+
+    if (!(Test-Path -Path "$ProductJsonPath" -PathType Leaf)) {
+        Write-Warning -Message ("$ProductJsonPath 不存在")
+        [System.Environment]::Exit(0)
+    }
+
+    $ProductInfo = $null
+    try {
+        $ProductInfo = Get-Content -Path "$ProductJsonPath" | ConvertFrom-Json
+    }
+    catch {
+        Write-Warning -Message ("$ProductJsonPath 解析失败")
+        [System.Environment]::Exit(0)
+    }
+    if (!$ProductInfo -or $ProductInfo -isNot [PSCustomObject]) {
+        Write-Warning -Message ("$ProductJsonPath 解析失败")
+        [System.Environment]::Exit(0)
+    }
+
+    $Version = $ProductInfo.'version'
+    if (!$Version) {
+        Write-Warning -Message ("$ProductJsonPath 不存在 version 信息")
+        [System.Environment]::Exit(0)
+    }
+
+    return $Version
+}
+
+function SaveReg {
     param($Path)
 
     Write-Host -Object ''
@@ -18,7 +52,7 @@
     reg export HKCC "$Path\old\hkcc.txt" /y
 
     Write-Host -Object ''
-    Write-Host -Object '设置修改前的注册表数据保存成功' -ForegroundColor Green
+    Write-Host -Object "设置修改前的注册表数据保存成功: $Path\old" -ForegroundColor Green
 
     Write-Host -Object ''
     Read-Host -Prompt '设置修改后请按回车键'
@@ -33,8 +67,22 @@
     reg export HKCC "$Path\new\hkcc.txt" /y
 
     Write-Host -Object ''
-    Write-Host -Object '设置修改后的注册表数据保存成功' -ForegroundColor Green
+    Write-Host -Object "设置修改后的注册表数据保存成功: $Path\new" -ForegroundColor Green
 }
+
+$VersionInfo = GetVertion
+
+if ($Version) {
+    return $VersionInfo
+}
+
+Clear-Host
+$PSDefaultParameterValues['*:Encoding'] = 'utf8'
+$ProgressPreference = 'SilentlyContinue'
+$Host.UI.RawUI.WindowTitle = "RegDiff v$VersionInfo"
+Set-Location -Path "$PSScriptRoot"
+Write-Host -Object ''
+Write-Host -Object "=====> RegDiff v$VersionInfo https://github.com/dsx42/RegDiff <====="
 
 while ($true) {
     Write-Host -Object ''
