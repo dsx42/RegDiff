@@ -5,7 +5,7 @@
 
 # 下载
 
-从如下链接下载最新的版本：`RegDiff_版本号.zip`
+从如下链接下载最新的版本：`RegDiff_v2022.9.14.zip`
 
 > https://github.com/dsx42/RegDiff/releases
 
